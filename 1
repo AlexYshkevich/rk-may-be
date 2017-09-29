@@ -1,0 +1,102 @@
+#include <iostream>
+#include <exception>
+#include <stdlib.h>
+#include <string>
+#include <stdexcept>
+using namespace std;
+
+class Triplet
+{
+	protected:
+		int first;
+		int second;
+		int third;
+	public:
+		Triplet(int i, int j, int k)
+		{
+				first = i;
+				second = j;
+				third = k;
+			
+		}
+		int const getFirst()
+		{
+			cout << first << endl;
+		}
+
+		int const getSecond()
+		{
+			cout << second << endl;
+		}
+		virtual void print()
+		{
+			cout << "Первый объект: " << first << endl;
+			cout << "Второй объект: " << second << endl;
+			cout << "Третий объект: " << third << endl;
+		}
+};
+
+class DayTime : public Triplet
+{
+	public:
+		int first;
+		int second;
+		int third;
+	static DayTime readDayTime()
+	{
+		int i;
+		int j;
+		int k;
+		cout << "Часы" << endl;
+		cin >> i;
+		cout << "Минутки" << endl;
+		cin >> j;
+		cout << "Секунды" << endl;
+		cin >> k;
+		return DayTime(i,j,k);
+	}
+	DayTime(int i, int j, int k) : Triplet(i,j,k)
+	{
+		if((i>23)||(j>59)||(k>59))
+			throw runtime_error("error");
+		else
+		{
+			first = i;
+			second = j;
+			third = k;
+		}
+	}
+
+	 void secondsFromDayStart()
+	{
+		cout << "С начала дня прошло: " << first*3600+second*60+third << " секундочек" << endl;      
+	}
+
+	int increaseTimeBySeconds()
+	{
+		int size_t_seconds;
+		cout << "Сколько секундочек хотите прибавить?" << endl;       										
+		cin >> size_t_seconds; 
+		if(size_t_seconds > 60 -third)
+			cout << "Не стоит прибавлять так много..." << endl;
+		int time = first*3600+second*60+third+size_t_seconds;
+		int c = (time/3600)%24;
+		int m = (time/60)%60;												
+		int s = time%60;
+		cout << "Получилось: " << c << ":" << m << ":" << s << endl;	
+		return 0;
+	}
+};
+
+int main()
+{
+	while(true)
+	{
+	DayTime A = DayTime :: readDayTime();
+	A.secondsFromDayStart();
+	A.increaseTimeBySeconds();
+	}
+
+
+	return 0;
+}
